@@ -27,8 +27,8 @@ class Logger extends AbstractLogger
         $this->columns = array(
             'id' => (new Column('id', 'bigint', 20))->auto()->primary()->unique()->notNull(),
             'level' => new Column('level', 'varchar', 16, LogLevel::INFO),
-            'message' => new Column('message', 'text'),
-            'context' => new Column('context', 'text'),
+            'message' => (new Column('message', 'text'))->notNull(),
+            'context' => (new Column('context', 'text'))->notNull(),
             'created_at' => new Column('created_at', 'datetime'),
             'created_by' => new Column('created_by', 'bigint', 20)
         );
@@ -101,6 +101,23 @@ class Logger extends AbstractLogger
         $insert->execute();
     }
     
+    /**
+     * Interpolates context values into the message placeholders.
+     */
+    function interpolate($message, array $context = array())
+    {
+        // build a replacement array with braces around the context keys
+        $replace = array();
+        foreach ($context as $key => $val) {
+            if (!is_array($val)) {
+                $replace['{{ ' . $key . ' }}'] = $val;
+            }
+        }
+
+        // interpolate replacement values into the message and return
+        return strtr($message, $replace);
+    }
+    
     public function getLogs(array $condition = []): array
     {
         if (empty($condition)) {
@@ -115,7 +132,8 @@ class Logger extends AbstractLogger
                 $record['created_by'] = (int)$record['created_by'];
             }
             $record['context'] = json_decode($record['context'], true);
-            $rows[$record['id']] = $record;
+            $record['message'] = $this->interpolate($record['message'], $record['context']);            
+            $rows[$record['id']] = $record;            
         }
         
         return $rows;
@@ -140,6 +158,7 @@ class Logger extends AbstractLogger
             $record['created_by'] = (int)$record['created_by'];
         }
         $record['context'] = json_decode($record['context'], true);
+        $record['message'] = $this->interpolate($record['message'], $record['context']);
 
         return $record;
     }
