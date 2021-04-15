@@ -19,6 +19,8 @@ class Logger extends AbstractLogger
      * @var int|null
      */
     protected $createdBy;
+
+    protected $lastInsertId;
     
     function __construct(PDO $pdo, $accountForeignRef = null)
     {
@@ -75,6 +77,8 @@ class Logger extends AbstractLogger
             return;
         }
         
+        $this->lastInsertId = false;
+        
         $record = array(
             'level' => $level,
             'message' => $message,
@@ -98,7 +102,15 @@ class Logger extends AbstractLogger
         foreach ($record as $name => $value) {
             $insert->bindValue(":$name", $value, $this->getColumn($name)->getDataType());
         }
-        $insert->execute();
+        
+        if ($insert->execute()) {
+            $this->lastInsertId = (int)$this->pdo->lastInsertId();
+        }
+    }
+    
+    public function lastInsertId()
+    {
+        return $this->lastInsertId;
     }
     
     /**

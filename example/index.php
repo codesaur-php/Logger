@@ -42,10 +42,13 @@ try {
     $oldLogs = $logger->getLogs();
     
     $logger->notice('Started using logger', array('Client IP' => $_SERVER['REMOTE_ADDR'], 'User-Agent' => $_SERVER['HTTP_USER_AGENT']));
-    $logger->debug('Reading log with id=1', array('id' => 1));
+    $logger->debug('Starting new session');
 
     echo "<hr><br/>";
-    var_dump(array('Log with id=10' => $logger->getLogById(10)));
+    $lastId = $logger->lastInsertId();
+    if ($lastId !== false) {    
+        var_dump(array('Last log id[' . $lastId . ']' => $logger->getLogById($lastId)));
+    }
 
     echo "<hr><br/>LIST OF ALL LOGS FROM PREVIOUS SESSIONS: sorted latest to oldest<br/>";
     var_dump($oldLogs);
