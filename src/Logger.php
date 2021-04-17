@@ -20,6 +20,11 @@ class Logger extends AbstractLogger
      */
     protected $createdBy;
 
+    /**
+     * ID of the last inserted log.
+     *
+     * @var int|false
+     */
     protected $lastInsertId;
     
     function __construct(PDO $pdo, $accountForeignRef = null)
@@ -51,7 +56,7 @@ class Logger extends AbstractLogger
             throw new Exception(__CLASS__ . ': Logger table name must be provided!');
         }
         
-        $this->name = $table . '_log';        
+        $this->name = $table . '_log';
         if ($this->hasTable($this->name)) {
             return;
         }
@@ -113,30 +118,23 @@ class Logger extends AbstractLogger
         return $this->lastInsertId;
     }
     
-    /**
-     * Interpolates context values into the message placeholders.
-     */
     function interpolate($message, array $context = array())
     {
-        // build a replacement array with braces around the context keys
         $replace = array();
         foreach ($context as $key => $val) {
             if (!is_array($val)) {
                 $replace['{{ ' . $key . ' }}'] = $val;
             }
         }
-
-        // interpolate replacement values into the message and return
         return strtr($message, $replace);
     }
     
     public function getLogs(array $condition = []): array
     {
+        $rows = array();
         if (empty($condition)) {
             $condition['ORDER BY'] = 'id Desc';
         }
-        
-        $rows = array();
         $stmt = $this->selectFrom($this->getName(), '*', $condition);
         while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $record['id'] = (int)$record['id'];
@@ -146,8 +144,7 @@ class Logger extends AbstractLogger
             $record['context'] = json_decode($record['context'], true);
             $record['message'] = $this->interpolate($record['message'], $record['context']);            
             $rows[$record['id']] = $record;            
-        }
-        
+        }        
         return $rows;
     }
     
@@ -157,8 +154,7 @@ class Logger extends AbstractLogger
             'WHERE' => 'id=:id',
             'LIMIT' => 1,
             'PARAM' => array(':id' => $id)
-        );
-        
+        );        
         $stmt = $this->selectFrom($this->getName(), '*', $condition);        
         if ($stmt->rowCount() != 1) {
             return null;
@@ -171,7 +167,6 @@ class Logger extends AbstractLogger
         }
         $record['context'] = json_decode($record['context'], true);
         $record['message'] = $this->interpolate($record['message'], $record['context']);
-
         return $record;
     }
 }
