@@ -3,6 +3,7 @@
 namespace codesaur\Logger;
 
 use PDO;
+use Exception;
 
 use Psr\Log\LogLevel;
 use Psr\Log\AbstractLogger;
@@ -53,7 +54,7 @@ class Logger extends AbstractLogger
     {
         $table = preg_replace('/[^A-Za-z0-9_-]/', '', $name);
         if (empty($table)) {
-            throw new Exception(__CLASS__ . ': Logger table name must be provided!');
+            throw new Exception(__CLASS__ . ': Logger table name must be provided!', 1103);
         }
         
         $this->name = $table . '_log';

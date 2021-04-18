@@ -56,5 +56,5 @@ try {
     $logger->prepareCreatedBy(1);
     $logger->info('Listed total {{ total }} logs', array('total' => count($oldLogs)));
 } catch (Exception $ex) {
-    die('[' . date('Y-m-d H:i:s') . ' Error] ' . $ex->getMessage());
+    die('<br/>{' . date('Y-m-d H:i:s') . '} Error[' . $ex->getCode() . '] => ' . $ex->getMessage());
 }
