@@ -34,7 +34,7 @@ try {
     }
 
     $pdo->exec("USE $database");
-    echo 'started using example database.<br/>';
+    echo "starting to use database [$database]<br/>";
     
     $logger = new Logger($pdo);
     $logger->setTable('default');
