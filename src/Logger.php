@@ -143,7 +143,7 @@ class Logger extends AbstractLogger
                 $record['created_by'] = (int)$record['created_by'];
             }
             $record['context'] = json_decode($record['context'], true);
-            $record['message'] = $this->interpolate($record['message'], $record['context']);            
+            $record['message'] = $this->interpolate($record['message'], $record['context'] ?? array());
             $rows[$record['id']] = $record;            
         }        
         return $rows;
@@ -167,7 +167,7 @@ class Logger extends AbstractLogger
             $record['created_by'] = (int)$record['created_by'];
         }
         $record['context'] = json_decode($record['context'], true);
-        $record['message'] = $this->interpolate($record['message'], $record['context']);
+        $record['message'] = $this->interpolate($record['message'], $record['context'] ?? array());
         return $record;
     }
 }
