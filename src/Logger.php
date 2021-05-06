@@ -144,7 +144,7 @@ class Logger extends AbstractLogger
             }
             $record['context'] = json_decode($record['context'], true);
             $record['message'] = $this->interpolate($record['message'], $record['context'] ?? array());
-            $rows[$record['id']] = $record;            
+            $rows[$record['id']] = $record;
         }        
         return $rows;
     }
