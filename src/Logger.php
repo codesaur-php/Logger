@@ -34,7 +34,7 @@ class Logger extends AbstractLogger
         
         $this->columns = array(
             'id' => (new Column('id', 'bigint', 20))->auto()->primary()->unique()->notNull(),
-            'level' => new Column('level', 'varchar', 16, LogLevel::INFO),
+            'level' => new Column('level', 'varchar', 16, LogLevel::NOTICE),
             'message' => (new Column('message', 'text'))->notNull(),
             'context' => (new Column('context', 'text'))->notNull(),
             'created_at' => new Column('created_at', 'datetime'),
@@ -67,6 +67,7 @@ class Logger extends AbstractLogger
     
     public function setColumns(array $columns)
     {
+        // prevents from changing column infos
     }
     
     public function prepareCreatedBy(int $createdBy)
