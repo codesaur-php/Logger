@@ -28,7 +28,7 @@ class Logger extends AbstractLogger
      */
     protected $lastInsertId;
     
-    function __construct(PDO $pdo, $accountForeignRef = null)
+    function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
         
@@ -40,14 +40,6 @@ class Logger extends AbstractLogger
             'created_at' => new Column('created_at', 'datetime'),
             'created_by' => new Column('created_by', 'bigint', 20)
         );
-        
-        if (!empty($accountForeignRef)) {
-            if (is_array($accountForeignRef)) {
-                call_user_func_array(array($this->columns['created_by'], 'foreignKey'), $accountForeignRef);
-            } else {
-                $this->columns['created_by']->foreignKey($accountForeignRef, 'id');
-            }
-        }
     }
     
     public function setTable(string $name, $collate = null)
