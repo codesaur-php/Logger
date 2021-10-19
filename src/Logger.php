@@ -54,7 +54,8 @@ class Logger extends AbstractLogger
             return;
         }
         
-        $this->createTable($this->name, $this->getColumns(), $collate);
+        $this->createTable($this->name, $this->getColumns(), $collate);        
+        $this->__initial();
     }
     
     public function setColumns(array $columns)
