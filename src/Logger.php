@@ -146,8 +146,8 @@ class Logger extends AbstractLogger
     public function getLogById($id)
     {
         $condition = array(
-            'WHERE' => 'id=:id',
             'LIMIT' => 1,
+            'WHERE' => 'id=:id',
             'PARAM' => array(':id' => $id)
         );        
         $stmt = $this->selectFrom($this->getName(), '*', $condition);        
