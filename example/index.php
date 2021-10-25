@@ -37,7 +37,7 @@ try {
     echo "starting to use database [$database]<br/>";
     
     $logger = new Logger($pdo);
-    $logger->setTable('default');
+    $logger->setTable('default', 'utf8_unicode_ci');
     
     $oldLogs = $logger->getLogs();
     
