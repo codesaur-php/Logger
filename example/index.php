@@ -13,7 +13,7 @@ error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
 require_once '../vendor/autoload.php';
 
 use PDO;
-use Exception;
+use Throwable;
 
 use codesaur\Logger\Logger;
 
@@ -27,9 +27,7 @@ try {
     echo 'connected to mysql...<br/>';
     
     $database = 'logger_example';
-    if ($_SERVER['HTTP_HOST'] === 'localhost'
-            && in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))
-    ) {
+    if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
         $pdo->exec("CREATE DATABASE IF NOT EXISTS $database COLLATE " . $pdo->quote('utf8_unicode_ci'));
     }
 
@@ -55,6 +53,6 @@ try {
 
     $logger->prepareCreatedBy(1);
     $logger->info('Listed total {{ total }} logs', array('total' => count($oldLogs)));
-} catch (Exception $ex) {
-    die('<br/>{' . date('Y-m-d H:i:s') . '} Error[' . $ex->getCode() . '] => ' . $ex->getMessage());
+} catch (Throwable $e) {
+    die('<br/>{' . date('Y-m-d H:i:s') . '} Error[' . $e->getCode() . '] => ' . $e->getMessage());
 }
