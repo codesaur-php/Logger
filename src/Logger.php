@@ -33,12 +33,12 @@ class Logger extends AbstractLogger
         $this->pdo = $pdo;
         
         $this->columns = array(
-            'id' => (new Column('id', 'bigint', 20))->auto()->primary()->unique()->notNull(),
+            'id' => (new Column('id', 'bigint', 8))->auto()->primary()->unique()->notNull(),
             'level' => new Column('level', 'varchar', 16, LogLevel::NOTICE),
             'message' => (new Column('message', 'text'))->notNull(),
             'context' => (new Column('context', 'text'))->notNull(),
             'created_at' => new Column('created_at', 'datetime'),
-            'created_by' => new Column('created_by', 'bigint', 20)
+            'created_by' => new Column('created_by', 'bigint', 8)
         );
     }
     
