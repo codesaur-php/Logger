@@ -14,7 +14,7 @@
     "require": {
         "ext-json": "*",
         "psr/log": ">=3.0.0",
-        "codesaur/dataobject": ">=3.4.2"
+        "codesaur/dataobject": ">=3.4.3"
     },
     "autoload": {
         "psr-4": {
