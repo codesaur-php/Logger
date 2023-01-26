@@ -79,8 +79,8 @@ class Logger extends AbstractLogger
         $record = [
             'level' => (string) $level,
             'message' => $message,
-            'context' => json_encode($context),
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'context' => json_encode($context) ?: ('{"log-context-write-error":"' . json_last_error_msg() . '"}')
         ];        
         if (isset($this->createdBy)) {
             $record['created_by'] = $this->createdBy;
@@ -108,7 +108,7 @@ class Logger extends AbstractLogger
         }
     }
     
-    public function lastInsertId(): int|false
+    public function lastInsertId(string $name = null): string|false
     {
         return $this->lastInsertId;
     }
@@ -136,7 +136,7 @@ class Logger extends AbstractLogger
             if (!empty($record['created_by'])) {
                 $record['created_by'] = (int) $record['created_by'];
             }
-            $record['context'] = json_decode($record['context'], true);
+            $record['context'] = json_decode($record['context'], true) ?? ['log-context-read-error' => json_last_error_msg()];
             $record['message'] = $this->interpolate($record['message'], $record['context'] ?? []);
             $rows[$record['id']] = $record;
         }        
@@ -160,7 +160,7 @@ class Logger extends AbstractLogger
         if (!empty($record['created_by'])) {
             $record['created_by'] = (int) $record['created_by'];
         }
-        $record['context'] = json_decode($record['context'], true);
+        $record['context'] = json_decode($record['context'], true) ?? ['log-context-read-error' => json_last_error_msg()];
         $record['message'] = $this->interpolate($record['message'], $record['context'] ?? []);
         return $record;
     }
