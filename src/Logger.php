@@ -80,7 +80,8 @@ class Logger extends AbstractLogger
             'level' => (string) $level,
             'message' => $message,
             'created_at' => date('Y-m-d H:i:s'),
-            'context' => json_encode($context) ?: ('{"log-context-write-error":"' . json_last_error_msg() . '"}')
+            'context' => json_encode($context)
+                ?: ('{"log-context-write-error":"' . addslashes(json_last_error_msg()) . '"}')
         ];        
         if (isset($this->createdBy)) {
             $record['created_by'] = $this->createdBy;
