@@ -41,14 +41,14 @@ try {
 
     echo "<hr><br/>";
     $lastId = $logger->lastInsertId();
-    if ($lastId !== false) {    
-        var_dump(['Last log id[' . $lastId . ']' => $logger->getLogById($lastId)]);
+    if ($lastId !== false) {
+        var_dump(['Last log id[' . $lastId . ']' => $logger->getLogById((int) $lastId)]);
     }
 
     echo "<hr><br/>LIST OF ALL LOGS FROM PREVIOUS SESSIONS: sorted latest to oldest<br/>";
     var_dump($oldLogs);
 
-    $logger->prepareCreatedBy(1);
+    putenv("CODESAUR_ACCOUNT_ID=1");
     $logger->info('Listed total {{ total }} logs', ['total' => count($oldLogs)]);
 } catch (\Throwable $th) {
     die('<br/>{' . date('Y-m-d H:i:s') . '} Error[' . $th->getCode() . '] => ' . $th->getMessage());
