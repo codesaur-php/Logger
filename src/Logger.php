@@ -48,7 +48,7 @@ class Logger extends AbstractLogger
     }
 
     protected function __initial()
-    {        
+    {
     }
     
     /**
