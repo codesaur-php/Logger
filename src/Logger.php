@@ -46,6 +46,10 @@ class Logger extends AbstractLogger
         // prevents from changing column infos
         throw new \Exception(__CLASS__ . ": You can't change predefined columns of Logger table!");
     }
+
+    protected function __initial()
+    {        
+    }
     
     /**
      * {@inheritdoc}
