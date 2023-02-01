@@ -27,7 +27,7 @@ class Logger extends AbstractLogger
     
     public function setTable(string $name, ?string $collate = null)
     {
-        $table = preg_replace('/[^A-Za-z0-9_-]/', '', $name);
+        $table = \preg_replace('/[^A-Za-z0-9_-]/', '', $name);
         if (empty($table)) {
             throw new \Exception(__CLASS__ . ': Logger table name must be provided', 1103);
         }
@@ -63,23 +63,23 @@ class Logger extends AbstractLogger
         $record = [
             'level' => (string) $level,
             'message' => $message,
-            'created_at' => date('Y-m-d H:i:s'),
-            'context' => json_encode($context)
-                ?: ('{"log-context-write-error":"' . addslashes(json_last_error_msg()) . '"}')
+            'created_at' => \date('Y-m-d H:i:s'),
+            'context' => \json_encode($context)
+                ?: ('{"log-context-write-error":"' . \addslashes(\json_last_error_msg()) . '"}')
         ];
 
-        $by_account = getenv('CODESAUR_ACCOUNT_ID', true);
+        $by_account = \getenv('CODESAUR_ACCOUNT_ID', true);
         if ($by_account) {
             $record['created_by'] = $by_account;
         }
         
         $column = $param = [];
-        foreach (array_keys($record) as $key) {
+        foreach (\array_keys($record) as $key) {
             $column[] = $key;
             $param[] = ":$key";
         }
-        $columns = implode(', ', $column);
-        $params = implode(', ', $param);
+        $columns = \implode(', ', $column);
+        $params = \implode(', ', $param);
         
         $insert = $this->prepare("INSERT INTO $this->name($columns) VALUES($params)");
         foreach ($record as $name => $value) {
@@ -92,11 +92,11 @@ class Logger extends AbstractLogger
     {
         $replace = [];
         foreach ($context as $key => $val) {
-            if (!is_array($val)) {
+            if (!\is_array($val)) {
                 $replace['{{ ' . $key . ' }}'] = $val;
             }
         }
-        return strtr($message, $replace);
+        return \strtr($message, $replace);
     }
     
     public function getLogs(array $condition = []): array
@@ -111,7 +111,7 @@ class Logger extends AbstractLogger
             if (!empty($record['created_by'])) {
                 $record['created_by'] = (int) $record['created_by'];
             }
-            $record['context'] = json_decode($record['context'], true) ?? ['log-context-read-error' => json_last_error_msg()];
+            $record['context'] = \json_decode($record['context'], true) ?? ['log-context-read-error' => \json_last_error_msg()];
             $record['message'] = $this->interpolate($record['message'], $record['context'] ?? []);
             $rows[$record['id']] = $record;
         }
@@ -135,7 +135,7 @@ class Logger extends AbstractLogger
         if (!empty($record['created_by'])) {
             $record['created_by'] = (int) $record['created_by'];
         }
-        $record['context'] = json_decode($record['context'], true) ?? ['log-context-read-error' => json_last_error_msg()];
+        $record['context'] = \json_decode($record['context'], true) ?? ['log-context-read-error' => \json_last_error_msg()];
         $record['message'] = $this->interpolate($record['message'], $record['context'] ?? []);
         return $record;
     }

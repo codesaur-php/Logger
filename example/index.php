@@ -7,8 +7,8 @@ namespace codesaur\Logger\Example;
  * This is an example script!
  */
 
-ini_set('display_errors', 'On');
-error_reporting(\E_ALL);
+\ini_set('display_errors', 'On');
+\error_reporting(\E_ALL);
 
 require_once '../vendor/autoload.php';
 
@@ -24,7 +24,7 @@ try {
     echo 'connected to mysql...<br/>';
     
     $database = 'logger_example';
-    if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+    if (\in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
         $pdo->exec("CREATE DATABASE IF NOT EXISTS $database COLLATE " . $pdo->quote('utf8_unicode_ci'));
     }
 
@@ -42,14 +42,14 @@ try {
     echo "<hr><br/>";
     $lastId = $logger->lastInsertId();
     if ($lastId !== false) {
-        var_dump(['Last log id[' . $lastId . ']' => $logger->getLogById((int) $lastId)]);
+        \var_dump(['Last log id[' . $lastId . ']' => $logger->getLogById((int) $lastId)]);
     }
 
     echo "<hr><br/>LIST OF ALL LOGS FROM PREVIOUS SESSIONS: sorted latest to oldest<br/>";
-    var_dump($oldLogs);
+    \var_dump($oldLogs);
 
-    putenv("CODESAUR_ACCOUNT_ID=1");
-    $logger->info('Listed total {{ total }} logs', ['total' => count($oldLogs)]);
+    \putenv("CODESAUR_ACCOUNT_ID=1");
+    $logger->info('Listed total {{ total }} logs', ['total' => \count($oldLogs)]);
 } catch (\Throwable $th) {
-    die('<br/>{' . date('Y-m-d H:i:s') . '} Error[' . $th->getCode() . '] => ' . $th->getMessage());
+    die('<br/>{' . \date('Y-m-d H:i:s') . '} Error[' . $th->getCode() . '] => ' . $th->getMessage());
 }
