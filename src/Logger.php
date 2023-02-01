@@ -105,7 +105,7 @@ class Logger extends AbstractLogger
         if (empty($condition)) {
             $condition['ORDER BY'] = 'id Desc';
         }
-        $stmt = $this->selectFrom($this->getName(), '*', $condition);        
+        $stmt = $this->selectFrom($this->getName(), '*', $condition);
         while ($record = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $record['id'] = (int) $record['id'];
             if (!empty($record['created_by'])) {
@@ -125,7 +125,7 @@ class Logger extends AbstractLogger
             'WHERE' => 'id=:id',
             'PARAM' => [':id' => $id]
         ];
-        $stmt = $this->selectFrom($this->getName(), '*', $condition);        
+        $stmt = $this->selectFrom($this->getName(), '*', $condition);
         if ($stmt->rowCount() != 1) {
             return null;
         }
