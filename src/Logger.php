@@ -114,7 +114,7 @@ class Logger extends AbstractLogger
             $record['context'] = json_decode($record['context'], true) ?? ['log-context-read-error' => json_last_error_msg()];
             $record['message'] = $this->interpolate($record['message'], $record['context'] ?? []);
             $rows[$record['id']] = $record;
-        }        
+        }
         return $rows;
     }
     
