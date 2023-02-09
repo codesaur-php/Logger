@@ -50,6 +50,6 @@ try {
 
     \putenv("CODESAUR_ACCOUNT_ID=1");
     $logger->info('Listed total {{ total }} logs', ['total' => \count($oldLogs)]);
-} catch (\Throwable $th) {
-    die('<br/>{' . \date('Y-m-d H:i:s') . '} Error[' . $th->getCode() . '] => ' . $th->getMessage());
+} catch (\Throwable $e) {
+    die('<br/>{' . \date('Y-m-d H:i:s') . '} Error[' . $e->getCode() . '] => ' . $e->getMessage());
 }
