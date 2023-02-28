@@ -36,7 +36,7 @@ try {
     
     $oldLogs = $logger->getLogs();
     
-    $logger->notice('Started using logger', ['Client IP' => $_SERVER['REMOTE_ADDR'], 'User-Agent' => $_SERVER['HTTP_USER_AGENT']]);
+    $logger->notice('Started using logger', ['Client IP' => $_SERVER['REMOTE_ADDR'], 'User-Agent' => $_SERVER['HTTP_USER_AGENT'] ?? '']);
     $logger->debug('Starting new session');
 
     echo "<hr><br/>";
