@@ -39,17 +39,19 @@ try {
     $logger->notice('Started using logger', ['Client IP' => $_SERVER['REMOTE_ADDR'], 'User-Agent' => $_SERVER['HTTP_USER_AGENT'] ?? '']);
     $logger->debug('Starting new session');
 
-    echo "<hr><br/>";
-    $lastId = $logger->getLastInsertId();
-    if ($lastId !== false) {
-        \var_dump(['Last log id[' . $lastId . ']' => $logger->getLogById((int) $lastId)]);
-    }
-
     echo "<hr><br/>LIST OF ALL LOGS FROM PREVIOUS SESSIONS: sorted latest to oldest<br/>";
     \var_dump($oldLogs);
 
     \putenv("CODESAUR_ACCOUNT_ID=1");
     $logger->info('Listed total {{ total }} logs', ['total' => \count($oldLogs)]);
+    
+    $logger->debug('Ends session');
+    
+    echo "<hr><br/>";
+    $lastId = $logger->getLastInsertId();
+    if ($lastId !== false) {
+        \var_dump(['Last log id[' . $lastId . ']' => $logger->getLogById((int) $lastId)]);
+    }    
 } catch (\Throwable $e) {
     die('<br/>{' . \date('Y-m-d H:i:s') . '} Error[' . $e->getCode() . '] => ' . $e->getMessage());
 }
