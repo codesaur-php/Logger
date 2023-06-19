@@ -40,7 +40,7 @@ try {
     $logger->debug('Starting new session');
 
     echo "<hr><br/>";
-    $lastId = $logger->lastInsertId();
+    $lastId = $logger->getLastInsertId();
     if ($lastId !== false) {
         \var_dump(['Last log id[' . $lastId . ']' => $logger->getLogById((int) $lastId)]);
     }
